@@ -10,6 +10,12 @@ import org.springframework.web.servlet.ModelAndView;
 @Controller
 public class PetClinicController {
 
+	//tomcat kullanilacagi zaman application properties a prefix ve suffix endpoint leri eklenir
+	//spring.mvc.view.prefix=/WEB-INF/jsp/
+	//spring.mvc.view.suffix=.jsp
+
+	//alttaki annotation su ise yarar: Bootstrapt sirasinda PetClinicService tipindeki bean i Controller bean ine inject eder.
+
 	@Autowired
 	private PetClinicService petClinicService;
 
