@@ -8,6 +8,14 @@
 <title>my title</title>
 </head>
 <body>
+<!--
+    -thymeleaf eklendigi zaman .jsp sayfalarina gerek kalmaz, onlar otomatik iptal olur.
+    -Thymeleaf ve freeMarker template enginleri kullanildiginda cache busting otomatik devreye girer.
+Ama JSP veya diger template engine ler kullanildiginda cache-busting icin manuel ayar yapilmalidir.
+
+bunun icin ResourceUrlEncodingFilter in devreye alinmasi lazim. bunun icin de @Configuretion sinifi
+altinda FilterRegistrationBean Bean i tanimlanmalidir
+-->
 	<table>
 		<thead>
 			<tr style="font-weight: bold;" bgcolor="lightblue">
