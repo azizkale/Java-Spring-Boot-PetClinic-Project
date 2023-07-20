@@ -19,7 +19,7 @@ public class PetClinicRestController {
     @Autowired
     private PetClinicService petClinicService;
 
-    @RequestMapping(method = RequestMethod.POST, value="owner")
+    @RequestMapping(method = RequestMethod.POST, value="/owner")
     public ResponseEntity<Owner> createOwner(@RequestBody Owner owner){
         try {
             petClinicService.createOwner(owner);
