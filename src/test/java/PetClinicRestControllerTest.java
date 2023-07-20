@@ -1,6 +1,7 @@
 import com.javaegitimleri.petclinic.model.Owner;
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.http.ResponseEntity;
@@ -30,10 +31,24 @@ public class PetClinicRestControllerTest {
     public void testGetOwnersByLastName(){
         ResponseEntity<List> response = restTemplate.getForEntity("http://localhost:8080/rest/owner?ln=Sevindik",List.class);
         MatcherAssert.assertThat(response.getStatusCodeValue(),Matchers.equalTo(200));
+
         List<Map<String,String>> body = response.getBody();
         List<String> firstNames = body.stream().map(e-> e.get("firstName")).collect(Collectors.toList());
 
         MatcherAssert.assertThat(firstNames,Matchers.containsInAnyOrder("Kenan","Hümeyra","Salim"));
-        System.out.println(firstNames);
+    }
+
+    @Test
+    public void testGetOwners(){
+        ResponseEntity<List> response = restTemplate.getForEntity("http://localhost:8080/rest/owners",List.class);
+
+        MatcherAssert.assertThat(response.getStatusCodeValue(),Matchers.equalTo(200));
+        List<Map<String,String>> body = response.getBody();
+
+        List<String> firstNames = body.stream().map(e->e.get("firstName")).collect(Collectors.toList());
+
+        MatcherAssert.assertThat(firstNames, Matchers.containsInAnyOrder("Kenan", "Hümeyra", "Salim", "Muammer"));
+
+
     }
 }
