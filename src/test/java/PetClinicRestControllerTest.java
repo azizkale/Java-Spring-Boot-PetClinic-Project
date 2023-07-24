@@ -65,4 +65,23 @@ public class PetClinicRestControllerTest {
         MatcherAssert.assertThat(firstNames, Matchers.containsInAnyOrder("Kenan", "Hümeyra", "Salim", "Muammer"));
     }
 
+    @Test
+    public void updateOwner(){
+        //at first getting an owner from Server
+        Owner owner = restTemplate.getForObject("http://localhost:8080/rest/owner/4",Owner.class);
+
+        //testing that wether it is expecting owner  before update
+        MatcherAssert.assertThat(owner.getFirstName(), Matchers.equalTo("Salim"));
+
+        //update
+        owner.setFirstName("Aziz");
+        owner.setLastName("KALE");
+        restTemplate.put("http://localhost:8080/rest/owner/4",owner);
+
+        //testing now updated owner
+        MatcherAssert.assertThat(owner.getFirstName(),Matchers.equalTo("Aziz"));
+        MatcherAssert.assertThat(owner.getLastName(), Matchers.equalTo("KALE"));
+
+
+    }
 }
