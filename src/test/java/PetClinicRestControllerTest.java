@@ -5,6 +5,7 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 
 import java.net.URI;
@@ -66,7 +67,7 @@ public class PetClinicRestControllerTest {
     }
 
     @Test
-    public void updateOwner(){
+    public void testUpdateOwner(){
         //at first getting an owner from Server
         Owner owner = restTemplate.getForObject("http://localhost:8080/rest/owner/4",Owner.class);
 
@@ -81,6 +82,17 @@ public class PetClinicRestControllerTest {
         //testing now updated owner
         MatcherAssert.assertThat(owner.getFirstName(),Matchers.equalTo("Aziz"));
         MatcherAssert.assertThat(owner.getLastName(), Matchers.equalTo("KALE"));
+    }
+
+    @Test
+    public void testDeleteOwner(){
+        restTemplate.delete("http://localhost:8080/rest/owner/1");
+        try {
+            restTemplate.getForEntity("http://localhost:8080/rest/owner/1", Owner.class);
+            Assert.fail("Should have not returned owner");
+        } catch (RestClientException ex) {
+
+        }
 
 
     }
