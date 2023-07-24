@@ -1,5 +1,6 @@
 package com.javaegitimleri.petclinic.web;
 
+import com.javaegitimleri.petclinic.exception.InternelServerException;
 import com.javaegitimleri.petclinic.exception.OwnerNotFoundException;
 import com.javaegitimleri.petclinic.model.Owner;
 import com.javaegitimleri.petclinic.service.PetClinicService;
@@ -76,11 +77,11 @@ public class PetClinicRestController {
     public ResponseEntity<?> deleteOwner(@PathVariable("id") Long id){
         try{
             petClinicService.deleteOwner(id);
-            return ResponseEntity.ok().build();
         }catch (OwnerNotFoundException ex){
-            return ResponseEntity.ok().build();
-        }catch (Exception ex){
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+            throw ex;
+        }catch (InternelServerException ex){
+            throw new InternelServerException(ex);
         }
+        return null;
     }
 }
