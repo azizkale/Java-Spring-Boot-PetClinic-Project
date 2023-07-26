@@ -8,7 +8,11 @@ import com.javaegitimleri.petclinic.service.PetClinicService;
 import java.net.URI;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.hateoas.Link;
+import org.springframework.hateoas.Resource;
+import org.springframework.hateoas.mvc.ControllerLinkBuilder;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -43,6 +47,26 @@ public class PetClinicRestController {
     public ResponseEntity<List<Owner>> getOwner(@RequestParam("ln") String lastname){
         List<Owner> owners = this.petClinicService.findOwners(lastname);
         return ResponseEntity.ok(owners);
+    }
+
+    //HATEOAS -> request ile api nin dokumantasyonu saglanmis oluyor
+    //client tarafindan json tipinde dönüs istenirse otomatik Hateoas metohodu invoke edilir
+    @RequestMapping(method = RequestMethod.GET, value = "/owner/{id}",produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<?> getOwnerAsHateoasResource(@PathVariable("id") Long id){
+        try {
+            Owner owner = this.petClinicService.findOwner(id);
+            Link self = ControllerLinkBuilder.linkTo(PetClinicRestController.class).slash("/owner" + id).withSelfRel();
+            Link create = ControllerLinkBuilder.linkTo(PetClinicRestController.class).slash("/owner").withRel("create");
+            Link update = ControllerLinkBuilder.linkTo(PetClinicRestController.class).slash("/owner").withRel("update");
+            Link delete = ControllerLinkBuilder.linkTo(PetClinicRestController.class).slash("/owner").withRel("delete");
+
+            Resource<Owner> resource = new Resource<Owner>(owner,self,create,update,delete);
+            return ResponseEntity.ok(resource);
+
+        }
+        catch (OwnerNotFoundException ex){
+            return ResponseEntity.notFound().build();
+        }
     }
 
     @RequestMapping(method = RequestMethod.GET, value="/owner/{id}")
