@@ -7,7 +7,7 @@ import java.util.Set;
 @Entity
 @Table(name="t_owner")
 public class Owner {
-	//bu anotasyonlar ile model siniflari ayni zamanda DB modelleri olarak kullaniliyor
+	//bu anotasyonlar ile model siniflari ayni zamanda DB tablolari olarak kullaniliyor
 
 	@Id // primary key
 	@SequenceGenerator(name="petClinicSeqGen",sequenceName="petclinic_sequence")
