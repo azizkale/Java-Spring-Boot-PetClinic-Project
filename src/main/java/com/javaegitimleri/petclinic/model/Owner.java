@@ -1,13 +1,26 @@
 package com.javaegitimleri.petclinic.model;
 
+import javax.persistence.*;
 import java.util.HashSet;
 import java.util.Set;
 
+@Entity
+@Table(name="t_owner")
 public class Owner {
+	//bu anotasyonlar ile model siniflari ayni zamanda DB modelleri olarak kullaniliyor
+
+	@Id // primary key
+	@SequenceGenerator(name="petClinicSeqGen",sequenceName="petclinic_sequence")
+	@GeneratedValue(strategy= GenerationType.SEQUENCE,generator="petClinicSeqGen")
 	private Long id;
+
+	@Column(name="first_name")
 	private String firstName;
+
+	@Column(name="last_name")
 	private String lastName;
-	
+
+	@OneToMany(mappedBy = "owner")
 	private Set<Pet> pets = new HashSet<>();
 
 	public Long getId() {
